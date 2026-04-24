@@ -1,0 +1,13 @@
+.btn {
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.btn.btn-primary {
+    background-color: blue;
+    color: white;
+}
+
+.btn.btn-primary:hover {
+    background-color: grey;
+}
