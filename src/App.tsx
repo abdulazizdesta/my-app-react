@@ -1,70 +1,67 @@
-import { useEffect, useState } from 'react';
+// import React from "react";
+import { useState } from "react";
+import axios from "axios";
 
-interface User {
-  id: number;
-  name: string;
+interface formLogin{
   email: string;
-  username: string;
+  password: string;
 }
 
 export default function App() {
-  const [users, setUsers] = useState<User[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    let isMounted = true;
-
-    const fecthUsers = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch('https://jsonplaceholder.typicode.com/users/', { signal: controller.signal });
-
-        if (!response.ok) {
-          throw new Error('Error fetching user data');
-        }
-
-        const data: User[] = await response.json();
-
-        if (isMounted) {
-          setUsers(data)
-        }
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
+  const [formLogin, setFormLogin] = useState<formLogin>({
+    email: "",
+    password: "",
+  })
+  const handleChange = (e: any) =>{
+    setFormLogin({
+      ...formLogin,
+      [e.target.name]: e.target.value
+    })
+  }
+  const handleSubmit = async (e: any) =>{
+    e.preventDefault();
+    try{
+      const response = await axios({
+        method: "POST",
+        url: "http://localhost:8000/api/auth/login",
+        data: formLogin
+      })
+      console.log(response, ":response");
+    }catch(error){
+      console.log(error);
     }
-    fecthUsers();
-    return () => {      
-      controller.abort();
-      isMounted = false;
-    }
-  }, []);
+  }
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error: {error}</p>
-  if (!users) return <p>No user data</p>
-
+  console.log(formLogin);
   return (
     <>
-      <h1>Welcome to My App!</h1>
-      <div className='grid grid-cols-3 gap-4'>
-        {users.map((user, index) => (
-          <div className='bg-white p-5 rounded-xl shadow my-2' key={index}>
-            <h2 className='text-indigo-500 text-xl font-bold'>{user.name}</h2>
-            <p className='text-gray-500'>{user.email}</p>
-            <p className='text-teal-600'>{user.username}</p>
+      <div className="bg-white">
+        <h1>Login</h1>
+        <div className="flex items-center justify-center h-screen">
+          <div className="bg-white p-4 rounded-lg shadow-md flex flex-col gap-4 w-96 flex items-center">
+            <label htmlFor="email">Email</label>
+            <input 
+            type="email" 
+            name="email" 
+            id="email"
+            value={formLogin.email}
+            onChange={handleChange} 
+            className="border border-grey-500 rounded-lg w-[80%]" 
+            />
+            <label htmlFor="password">Password</label>
+            <input 
+            type="password" 
+            name="password" 
+            id="password" 
+            value={formLogin.password}
+            onChange={handleChange}
+            className="border border-grey-500 rounded-lg w-[80%]" />
+            <button 
+            className="pointer bg-blue-500 text-white py-2 px-4 rounded-lg w-[40%]" 
+            onClick={handleSubmit}>Login</button>
           </div>
-        ))}
+        </div>
       </div>
     </>
-  )
+  );
 }
