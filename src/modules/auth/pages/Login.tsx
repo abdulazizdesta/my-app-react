@@ -8,7 +8,7 @@ interface FormLogin {
   password: string
 }
 
-export default function App() {
+export default function Login() {
   const [form, setForm] = useState<FormLogin>({
     email: "",
     password: "",
