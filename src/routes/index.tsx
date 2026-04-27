@@ -1,6 +1,8 @@
 import { useRoutes } from "react-router-dom";
-import { dashboardRoutes } from "../modules/dashboard/routes"
+import dashboardRoutes from "../modules/dashboard/routes"
+import authRoutes from "../modules/auth/routes";
+import productRoutes from "../modules/product/routes";
 
 export default function AppRoutes() {
-  return useRoutes([...dashboardRoutes])
+  return useRoutes([...authRoutes,...dashboardRoutes,...productRoutes])
 }
