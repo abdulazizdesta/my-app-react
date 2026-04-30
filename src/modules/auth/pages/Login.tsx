@@ -70,6 +70,14 @@ export default function Login() {
                 className="border border-gray-400 px-2 py-2 mb-2 w-full rounded-xl"
               />
             </div>
+            <p className="text-gray-500 text-xs mt-4"> 
+              Don't have account?
+              <span 
+              className="text-indigo-400 cursor-pointer mx-1"
+              onClick={() => navigate('/register')}>
+                   Register
+              </span>
+            </p>
             <div className="flex justify-center gap-4">
               <button 
                 className="bg-slate-600 text-white p-2 w-full rounded-xl mt-8 cursor-pointer"

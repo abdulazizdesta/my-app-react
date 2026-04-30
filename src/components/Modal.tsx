@@ -84,13 +84,13 @@ export default function Modal({
 
                         <div className="flex justify-end gap-3">
                             <button
-                                className="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition"
+                                className="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 cursor-pointer transition"
                                 onClick={() => setOpenModal(false)}
                             >
                                 Close
                             </button>
                             <button
-                                className="px-4 py-2 text-sm rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white font-semibold transition"
+                                className="px-4 py-2 text-sm rounded-lg bg-indigo-500 hover:bg-indigo-600 cursor-pointer text-white font-semibold transition"
                                 onClick={handleSubmit}
                             >
                                 Save
