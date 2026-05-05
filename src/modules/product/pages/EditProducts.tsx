@@ -14,7 +14,7 @@ interface Product {
 export default function EditProducts() {
     const id = useParams().id
     const navigate = useNavigate()
-    const [products, setProducts] = useState<Product>({
+    const [_products, setProducts] = useState<Product>({
         id: 0,
         name: "",
         price: 0,
