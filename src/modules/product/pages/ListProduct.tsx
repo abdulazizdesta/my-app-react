@@ -21,12 +21,14 @@ export default function ListProduct() {
   const [perPage, setPerPage] = useState<number>(10)
   const [id, setId] = useState<any>(null)
   const navigate = useNavigate()
+  const [pager, setPager] = useState<number>(1)
+  const [maxPage, setMaxPage] = useState<number>(1)
 
   const fetchProducts = async () => {
     try {
       const response = await axios({
         method: "GET",
-        url: "http://localhost:8000/api/products?perPage=" + perPage,
+        url: "http://localhost:8000/api/products?perPage=" + perPage + "&page=" + pager,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -34,6 +36,7 @@ export default function ListProduct() {
       console.log(response, "response");
 
       await setProducts(response.data.data.data);
+      await setMaxPage(response.data.data.meta.last_page);
     } catch (error) {
       console.log(error, "error");
     }
@@ -41,7 +44,7 @@ export default function ListProduct() {
 
   useEffect(() => {
     fetchProducts();
-  }, [perPage]);
+  }, [perPage, pager]);
 
   const handleChangeProduct = (e: any) => {
     setFormProduct({
@@ -74,6 +77,10 @@ export default function ListProduct() {
 
   const handlePerPage = (e: any) => {
     setPerPage(e.target.value)
+  }
+
+  const setCurrentPage = (page: number) => {
+    setPager(page)
   }
 
   const handleDeleteProduct = async () => {
@@ -158,13 +165,33 @@ export default function ListProduct() {
           <ul className="flex items-center justify-end -space-x-px text-sm">
             <li>
               <a
-                href="#"
+                onClick={() => setPager(pager -1)}
                 className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-indigo-500 hover:text-white hover:text-heading font-medium rounded-s-base text-sm px-3 h-9 focus:outline-none rounded-l-lg hover:cursor-pointer hover:border-indigo-500"
               >
                 Previous
               </a>
             </li>
-            <li>
+
+            {Array.from({length: maxPage}, (_, i) => i + 1).map((page) => (
+              <li key={page}>
+                <a
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setCurrentPage(page)
+                  }}
+
+                  className={`flex items-center justify-center text-sm px-3 h-9 border rounded-s-base cursor-pointer 
+                    ${
+                      pager === page 
+                      ? "bg-indigo-500 text-white border-indigo-500"
+                      : "bg-white hover:bg-indigo-500 border-indigo-500 hover:text-white"}`}
+                >
+                  {page}
+                </a>
+              </li>
+            ))}
+
+            {/* <li>
               <a
                 href="#"
                 className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-indigo-500 hover:text-white hover:text-heading font-medium rounded-s-base text-sm px-3 h-9 focus:outline-none hover:cursor-pointer hover:border-indigo-500"
@@ -204,10 +231,10 @@ export default function ListProduct() {
               >
                 5
               </a>
-            </li>
+            </li> */}
             <li>
               <a
-                href="#"
+                onClick={() => setPager(pager + 1)}
                 className="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-indigo-500 hover:text-white hover:text-heading font-medium rounded-s-base text-sm px-3 h-9 focus:outline-none rounded-r-lg hover:cursor-pointer hover:border-indigo-500"
               >
                 Next
