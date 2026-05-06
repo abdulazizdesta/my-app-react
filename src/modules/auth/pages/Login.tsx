@@ -2,7 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
-
+import { Helmet } from "react-helmet-async";
+import { authLoginSeo } from "./Seo";
 interface FormLogin {
   email: string
   password: string
@@ -41,6 +42,10 @@ export default function Login() {
   };
   return (
     <>
+      <Helmet>
+        <title>{authLoginSeo.title}</title>
+        <meta name="description" content={authLoginSeo.description} />
+      </Helmet>
       <div className="flex flexbox h-screen">
 
         {/* left */}
@@ -53,6 +58,7 @@ export default function Login() {
             <div className="flex flex-col gap-2 mb-2">
               <label htmlFor="email">Email</label>
               <input
+                id="email"
                 type="email"
                 name="email"
                 onChange={handleChange}
@@ -63,6 +69,7 @@ export default function Login() {
             <div className="flex flex-col gap-2">
               <label htmlFor="password">Password</label>
               <input
+                id="password"
                 type="password"
                 name="password"
                 onChange={handleChange}
@@ -70,16 +77,16 @@ export default function Login() {
                 className="border border-gray-400 px-2 py-2 mb-2 w-full rounded-xl"
               />
             </div>
-            <p className="text-gray-500 text-xs mt-4"> 
+            <p className="text-gray-500 text-xs mt-4">
               Don't have account?
-              <span 
-              className="text-indigo-400 cursor-pointer mx-1"
-              onClick={() => navigate('/register')}>
-                   Register
+              <span
+                className="text-indigo-400 cursor-pointer mx-1"
+                onClick={() => navigate('/register')}>
+                Register
               </span>
             </p>
             <div className="flex justify-center gap-4">
-              <button 
+              <button
                 className="bg-slate-600 text-white p-2 w-full rounded-xl mt-8 cursor-pointer"
                 onClick={handleSubmit}
                 disabled={loading}>
@@ -99,7 +106,7 @@ export default function Login() {
         </div>
 
       </div >
-      <ToastContainer/>
+      <ToastContainer />
     </>
   )
 }
